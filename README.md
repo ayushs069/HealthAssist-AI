@@ -1,6 +1,6 @@
 # HealthAssist AI 🏥
 
-A production-ready **Healthcare RAG (Retrieval-Augmented Generation)** system powered by a FastAPI backend, a modern HTML/CSS/JS dashboard, and LLMs via Groq — built to answer medical questions from a curated knowledge base.
+A production-ready **Healthcare RAG (Retrieval-Augmented Generation)** system powered by a FastAPI backend, a modern HTML/CSS/JS dashboard, and LLMs via Groq — built to answer medical questions from a curated knowledge base in a pdf.
 
 ---
 
