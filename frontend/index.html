@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthAssist AI | Advanced Healthcare RAG</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- LEFT PANEL: PIPELINE VISUALIZATION -->
+        <div class="panel left-panel">
+            <h2 class="panel-title"><i class="fa-solid fa-diagram-project"></i> RAG Pipeline</h2>
+            <div class="pipeline-flow">
+                
+                <div class="pipeline-step" id="step-ingestion">
+                    <div class="step-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                    <div class="step-content">
+                        <h3>1. Ingestion & Preprocessing</h3>
+                        <p class="status-text hidden" id="status-ingestion">Load & Clean PDF...</p>
+                    </div>
+                </div>
+                <div class="flow-line" id="line-1"></div>
+
+                <div class="pipeline-step" id="step-chunking">
+                    <div class="step-icon"><i class="fa-solid fa-scissors"></i></div>
+                    <div class="step-content">
+                        <h3>2. Chunking Strategy</h3>
+                        <select id="chunk-size" class="nice-select">
+                            <option value="300">Small chunks (300 chars)</option>
+                            <option value="500" selected>Medium chunks (500 chars)</option>
+                            <option value="1000">Large chunks (1000 chars)</option>
+                        </select>
+                        <p class="status-text hidden" id="status-chunking">Splitting documents...</p>
+                    </div>
+                </div>
+                <div class="flow-line" id="line-2"></div>
+
+                <div class="pipeline-step" id="step-embeddings">
+                    <div class="step-icon"><i class="fa-solid fa-n"></i></div>
+                    <div class="step-content">
+                        <h3>3. Embedding Model</h3>
+                        <select id="embedding-model" class="nice-select">
+                            <option value="all-MiniLM-L6-v2">all-MiniLM-L6-v2 (384-dim)</option>
+                            <option value="BAAI/bge-small-en-v1.5">BGE-Small (384-dim)</option>
+                            <option value="BAAI/bge-large-en-v1.5">BGE-Large (1024-dim)</option>
+                        </select>
+                        <p class="status-text hidden" id="status-embeddings">Generating embeddings...</p>
+                    </div>
+                </div>
+                <div class="flow-line" id="line-3"></div>
+
+                <div class="pipeline-step" id="step-vectordb">
+                    <div class="step-icon"><i class="fa-solid fa-database"></i></div>
+                    <div class="step-content">
+                        <h3>4. Vector Search & Retrieval</h3>
+                        <div class="toggle-group">
+                            <label><input type="radio" name="db-type" value="faiss" checked> FAISS</label>
+                            <label><input type="radio" name="db-type" value="chroma"> ChromaDB</label>
+                        </div>
+                        <p class="status-text hidden" id="status-vectordb">Retrieving top-K matches...</p>
+                    </div>
+                </div>
+                <div class="flow-line" id="line-4"></div>
+
+                <div class="pipeline-step" id="step-llm">
+                    <div class="step-icon"><i class="fa-solid fa-brain"></i></div>
+                    <div class="step-content">
+                        <h3>5. Prompt Engineering & LLM</h3>
+                        <select id="llm-model" class="nice-select">
+                            <option value="ollama:llama3">Meta LLaMA 3</option>
+                            <option value="ollama:gemma2">Google Gemma 2</option>
+                            <option value="ollama:mistral">Mistral 7B</option>
+                            <option value="groq:llama-3.3-70b-versatile">Groq Llama 3.3 70B</option>
+                            <option value="groq:llama-3.1-8b-instant" selected>Groq Llama 3.1 8B Instant</option>
+                        </select>
+                        <p class="status-text hidden" id="status-llm">LLM synthesizing answer...</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel center-panel">
+            <div class="center-header">
+                <h2 class="panel-title main-title">
+                    HealthAssist AI Dashboard 
+                    <span class="badge">Evaluator Ready</span>
+                </h2>
+                <div class="chat-controls">
+                    <span id="history-status" class="badge-blue">Auto-saved locally</span>
+                    <button id="export-chat-btn" class="badge-blue chat-action-btn">
+                        <i class="fa-solid fa-download"></i> Export
+                    </button>
+                    <button id="clear-chat-btn" class="badge-blue chat-action-btn">
+                        <i class="fa-solid fa-trash"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- CHAT HISTORY AREA (Scrollable) -->
+            <div id="chat-history" class="chat-history-container">
+                <!-- Chat bubbles will be injected here -->
+            </div>
+
+            <div class="input-area" style="margin-top: auto;">
+                <div class="input-wrapper">
+                    <input type="text" id="user-input" placeholder="Ask a healthcare question...">
+                    <button id="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT PANEL: EXPERIMENT COMPARISON -->
+        <div class="panel right-panel">
+            <h2 class="panel-title"><i class="fa-solid fa-scale-balanced"></i> System Evaluation</h2>
+            
+            <div class="experiment-card">
+                <div class="experiment-header">
+                    <h4>Config A <span class="badge-blue">Baseline</span></h4>
+                    <p>MiniLM • FAISS • Small Chunks</p>
+                </div>
+                <div class="experiment-metrics">
+                    <div class="metric"><span class="label">ROUGE-1</span> <div class="bar-container"><div class="bar" style="width: 78%;"></div></div> <span class="val">0.78</span></div>
+                    <div class="metric"><span class="label">BLEU</span> <div class="bar-container"><div class="bar" style="width: 65%;"></div></div> <span class="val">0.65</span></div>
+                    <div class="metric"><span class="label">Time</span> <div class="bar-container"><div class="bar bar-inverse" style="width: 40%;"></div></div> <span class="val">1.2s</span></div>
+                </div>
+            </div>
+
+            <div class="experiment-card best-config" style="border-color: var(--accent-teal);">
+                <div class="experiment-header">
+                    <h4>Config B <span class="badge-teal"><i class="fa-solid fa-star"></i> Best Config</span></h4>
+                    <p>BGE-Large • ChromaDB • Big Chunks</p>
+                </div>
+                <div class="experiment-metrics">
+                    <div class="metric"><span class="label">ROUGE-1</span> <div class="bar-container"><div class="bar" style="width: 89%;"></div></div> <span class="val">0.89</span></div>
+                    <div class="metric"><span class="label">BLEU</span> <div class="bar-container"><div class="bar" style="width: 76%;"></div></div> <span class="val">0.76</span></div>
+                    <div class="metric"><span class="label">Time</span> <div class="bar-container"><div class="bar bar-inverse" style="width: 60%;"></div></div> <span class="val">2.1s</span></div>
+                </div>
+            </div>
+
+            <div class="evaluation-summary">
+                <p><strong>Conclusion:</strong> Config B achieves higher relevance due to better BGE-Large embeddings and MMR retrieval. <br><br><em>Trade-off:</em> Slightly slower response time due to DB IO and larger vector size.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs and local artifacts
+*.log
+*.tmp
+*.swp
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Vector database / generated data (large files)
+chroma_db/
+data/documents/
+
+# Python cache
+__pycache__/
+*.pyc

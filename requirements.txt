@@ -1,0 +1,35 @@
+# Core LangChain
+langchain
+langchain-community
+langchain-text-splitters
+langchain-huggingface
+langchain-ollama
+langchain-chroma
+langchain-groq
+python-dotenv
+
+# Vector Databases
+faiss-cpu
+chromadb
+
+# Embeddings & Models
+sentence-transformers
+huggingface_hub
+tiktoken
+
+# PDF Loading
+pypdf
+
+# Evaluation Metrics
+rouge-score
+nltk
+bert-score
+
+# Data Processing
+pandas
+numpy
+
+# Utilities
+tqdm
+fastapi
+uvicorn
